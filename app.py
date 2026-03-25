@@ -1,20 +1,19 @@
 import streamlit as st
 import pickle
 import string
-from nltk.corpus import stopwords
 import nltk
+
+from nltk.corpus import stopwords
+from nltk.stem.porter import PorterStemmer
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+
 nltk.download('punkt')
 
-from nltk.stem.porter import PorterStemmer
 ps = PorterStemmer()
 
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
-nltk.download('punkt')
-
 def transform_Message(Message):
-    messageessage = Message.lower()
+    Message = Message.lower()
     Message = nltk.word_tokenize(Message)
-
     y = []
     for i in Message:
         if i.isalnum():
@@ -46,6 +45,13 @@ if st.button('predict'):
     result = model.predict(vector_input)[0]
     # 4. Display
     if result == 1:
-        st.header("Spam")
+        st.markdown(
+            "<h3 style='color: red;'>Spam</h3>",
+            unsafe_allow_html=True
+        )
     else:
-        st.header("Not Spam")
+        st.markdown(
+            "<h3 style='color: green;'>Not Spam</h3>",
+            unsafe_allow_html=True
+        )
+
